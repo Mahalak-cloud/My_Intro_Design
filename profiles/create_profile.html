@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Profile</title>
+    <style>
+        .dropzone {
+            border: 2px dashed #0087F7;
+            border-radius: 5px;
+            background: white;
+            padding: 50px;
+            text-align: center;
+            font: 20px;
+            color: #B8B8B8;
+        }
+        .dropzone.dragover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create Profile</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="dropzone" id="resumeDropzone">Drop your resume here or click to upload.</div>
+        <input type="file" id="resumeInput" name="resume" style="display: none;">
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const dropzone = document.getElementById('resumeDropzone');
+        const resumeInput = document.getElementById('resumeInput');
+
+        dropzone.addEventListener('click', () => resumeInput.click());
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('dragover');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                resumeInput.files = files;
+                dropzone.textContent = files[0].name;
+            }
+        });
+
+        resumeInput.addEventListener('change', () => {
+            if (resumeInput.files.length > 0) {
+                dropzone.textContent = resumeInput.files[0].name;
+            }
+        });
+    </script>
+</body>
+</html>
