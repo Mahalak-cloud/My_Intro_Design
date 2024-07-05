@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('profiles/', include('profiles.urls')),
     path('',create_profile, name='profile')
-     # Add this line
+
 ]
 
 if settings.DEBUG:
